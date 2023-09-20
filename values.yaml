@@ -5,6 +5,10 @@ check_crds:
       version: v1alpha1
     - name: eniconfigs.crd.k8s.amazonaws.com
       version: v1alpha1
+    - name: policyendpoints.networking.k8s.aws
+      version: v1alpha1
+    - name: securitygrouppolicies.vpcresources.k8s.aws
+      version: v1beta1
 
 check_csi:
   enabled: true
