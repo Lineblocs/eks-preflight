@@ -1,5 +1,0 @@
-crds:
-  - name: cninodes.vpcresources.k8s.aws
-    version: v1alpha1
-  - name: eniconfigs.crd.k8s.amazonaws.com
-    version: v1alpha

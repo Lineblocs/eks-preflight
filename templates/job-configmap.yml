@@ -1,0 +1,10 @@
+{{- if .Values.check_crds.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: check-crds
+data:
+  crds.sh: |- {{ .Files.Get "checks/crds.sh" | nindent 4 }}
+  crds_conf.yaml: |-
+    crds: {{ toYaml .Values.check_crds.crds | nindent 6 }}
+    {{- end }}
