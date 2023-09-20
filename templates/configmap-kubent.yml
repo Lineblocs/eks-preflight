@@ -1,0 +1,8 @@
+{{- if .Values.check_kubent.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: check-kubent
+data:
+  kubent.sh: |- {{ .Files.Get "checks/kubent.sh" | nindent 4 }}
+    {{- end }}

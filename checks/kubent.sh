@@ -1,6 +1,8 @@
 #!/bin/bash
 
 preflight_checks() {
+  apt update
+  apt install -y curl
   kubectl version > /dev/null
   sh -c "$(curl -sSL https://git.io/install-kubent)" > /dev/null
 }

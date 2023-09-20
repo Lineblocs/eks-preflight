@@ -1,0 +1,10 @@
+{{- if .Values.check_csi.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: check-csi
+data:
+  csi.sh: |- {{ .Files.Get "checks/csi.sh" | nindent 4 }}
+  csi_conf.yaml: |-
+    csi: {{ toYaml .Values.check_csi.csi | nindent 6 }}
+    {{- end }}

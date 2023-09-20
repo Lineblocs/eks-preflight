@@ -1,14 +1,14 @@
-{{- if .Values.check_crds.enabled }}
+{{- if .Values.check_kubent.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: check-crds
+  name: check-kubent
 spec:
   template:
     spec:
       serviceAccountName: checks
       containers:
-        - name: check-crds
+        - name: check-kubent
           image: bitnami/kubectl:1.26
           workingDir: /checks
           securityContext:
@@ -16,7 +16,7 @@ spec:
             runAsUser: 0
           command: ["/bin/bash", "-c"]
           args:
-            - "cp /conf/crds* ./ && chmod u+x crds*.sh && ./crds.sh"
+            - "cp /conf/kubent.sh ./ && chmod u+x kubent*.sh && ./kubent.sh"
           volumeMounts:
             - mountPath: /conf
               name: config
@@ -24,7 +24,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: check-crds
+            name: check-kubent
   backoffLimit: 0
   podFailurePolicy:
     rules:

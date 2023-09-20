@@ -1,0 +1,8 @@
+{{- if .Values.check_cloudwatch.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: check-cloudwatch
+data:
+  cloudwatch.sh: |- {{ .Files.Get "checks/cloudwatch.sh" | nindent 4 }}
+    {{- end }}

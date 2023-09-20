@@ -4,4 +4,19 @@ check_crds:
     - name: cninodes.vpcresources.k8s.aws
       version: v1alpha1
     - name: eniconfigs.crd.k8s.amazonaws.com
-      version: v1alpha
+      version: v1alpha1
+
+check_csi:
+  enabled: true
+  checkMode: ATLEASTONE
+  csi:
+    haha: hoho
+
+check_kubent:
+  enabled: true
+
+check_metrics:
+  enabled: true
+
+check_cloudwatch:
+  enabled: true
