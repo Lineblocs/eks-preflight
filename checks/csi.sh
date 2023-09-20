@@ -2,6 +2,8 @@
 
 CONF_FILE=./csi_conf.sh
 
+# preflight_checks will check if requirements for this check are met.
+# This one will also install yq, convert yaml conf in shell format and source it.
 preflight_checks() {
     apt update
     apt install -y wget
@@ -14,6 +16,9 @@ preflight_checks() {
     source $CONF_FILE
 }
 
+# check_at_least_one checks if at least one CSIDriver is configured.
+# It can be ebs, efs or anything.
+# Returns with 0 if present, 1 if not.
 check_at_least_one() {
   echo -e "Using 'at least one' mode for CSI driver check...\n"
 
@@ -27,6 +32,11 @@ check_at_least_one() {
   fi
 }
 
+# check_regex checks if the list of returned CSIDriver matches a given regex.
+# The format of this list is : <driver1_name> <driver2_name> ...
+# Please note that this needs an exact match to be ok.
+# It can be ebs, efs or anything.
+# Returns with 0 if present, 1 if not.
 check_regex() {
     if [ -z "$csi_regex" ]; then
       echo "You need to pass a regex in order to use this mode. Please refer to the documentation."
@@ -57,9 +67,11 @@ case $CHECK_MODE in
     ;;
 
   ONEPRESENT)
+    # TODO: do this mode too
     ;;
 
   ALLPRESENT)
+    # TODO: do this mode too
     ;;
 
 esac

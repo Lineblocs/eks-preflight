@@ -13,8 +13,7 @@ check_crds:
 check_csi:
   enabled: true
   checkMode: ATLEASTONE
-  csi:
-    haha: hoho
+
 
 check_kubent:
   enabled: true

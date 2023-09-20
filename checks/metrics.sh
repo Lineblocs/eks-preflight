@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# preflight_checks will check if requirements for this check are met.
 preflight_checks() {
   kubectl version
-  sh -c "$(curl -sSL https://git.io/install-kubent)"
 }
 
+# fetch_metrics_server checks if metrics.k8s.io API is provider by a service of any kind.
+# It can be provided by metrics-server, by a Prometheus, ...
+# Returns with 0 if present, 1 if not.
 fetch_metrics_server() {
   kubectl describe apiservice/v1beta1.metrics.k8s.io
   if [[ $? == 0 ]]; then
@@ -16,3 +19,5 @@ fetch_metrics_server() {
 
 preflight_checks
 fetch_metrics_server
+
+# TODO: check for custom metrics too ?
