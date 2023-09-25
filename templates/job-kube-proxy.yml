@@ -1,0 +1,35 @@
+{{- if .Values.check_kube_proxy.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: check-kube-proxy
+spec:
+  template:
+    spec:
+      serviceAccountName: checks
+      containers:
+        - name: check-kube-proxy
+          image: bitnami/kubectl:1.26
+          workingDir: /checks
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 0
+          command: ["/bin/bash", "-c"]
+          args:
+            - "cp /conf/kube-proxy.sh ./ && chmod u+x kube-proxy.sh && ./kube-proxy.sh"
+          volumeMounts:
+            - mountPath: /conf
+              name: config
+      restartPolicy: Never
+      volumes:
+        - name: config
+          configMap:
+            name: check-kube-proxy
+  backoffLimit: 0
+  podFailurePolicy:
+    rules:
+      - action: FailJob
+        onExitCodes:
+          operator: In
+          values: [ 1 ]
+{{- end }}

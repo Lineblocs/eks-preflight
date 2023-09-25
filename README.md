@@ -28,7 +28,8 @@ The structure is :
 │   ├── job-kubent.yml
 │   ├── job-metrics.yml
 │   ├── NOTES.txt
-│   └── rbac.yml
+│   ├── rbac.yml
+│   └── etc...
 └── values.yaml # Default values for a release. Feel free to create your own !
 ```
 

@@ -1,0 +1,38 @@
+{{- if .Values.check_node_groups.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: check-node-groups
+spec:
+  template:
+    spec:
+      serviceAccountName: checks
+      containers:
+        - name: check-cloudwatch
+          image: bitnami/kubectl:1.26
+          workingDir: /checks
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 0
+          command: [ "/bin/bash", "-c" ]
+          args:
+            - "cp /conf/node-groups.sh ./ && chmod u+x node-groups.sh && ./node-groups.sh"
+          volumeMounts:
+            - mountPath: /conf
+              name: config
+          env:
+            - name: NODE_TYPE_SELECTOR
+              value: {{ .Values.check_node_groups.nodeTypeSelector | required "Please provide a selector for node groups type" }}
+      restartPolicy: Never
+      volumes:
+        - name: config
+          configMap:
+            name: check-node-groups
+  backoffLimit: 0
+  podFailurePolicy:
+    rules:
+      - action: FailJob
+        onExitCodes:
+          operator: In
+          values: [ 1 ]
+{{- end }}

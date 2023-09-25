@@ -1,7 +1,7 @@
 check_crds:
   enabled: true
   crds:
-    - name: cninodes.vpcresources.k8s.aws
+    - name: cninodes.vpcresources.k8s.aws # VPC-CNI addons
       version: v1alpha1
     - name: eniconfigs.crd.k8s.amazonaws.com
       version: v1alpha1
@@ -18,8 +18,18 @@ check_csi:
 check_kubent:
   enabled: true
 
+check_kube_proxy:
+  enabled: true
+
+check_loadbalancer_svc:
+  enabled: true
+
 check_metrics:
   enabled: true
+
+check_node_groups:
+  enabled: true
+  nodeTypeSelector: lineblocs.com/node-type
 
 check_cloudwatch:
   enabled: true

@@ -1,0 +1,8 @@
+{{- if .Values.check_kube_proxy.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: check-kube-proxy
+data:
+  kube-proxy.sh: |- {{ .Files.Get "checks/kube-proxy.sh" | nindent 4 }}
+    {{- end }}

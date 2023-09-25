@@ -1,0 +1,41 @@
+{{- if .Values.check_loadbalancer_svc.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: check-loadbalancer-svc
+spec:
+  template:
+    spec:
+      serviceAccountName: checks
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: check-loadbalancer-svc
+          image: bitnami/kubectl:1.26
+          workingDir: /checks
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 0
+          command: [ "/bin/bash", "-c" ]
+          args:
+            - "cp /conf/loadbalancer* ./ && chmod u+x loadbalancer-svc.sh && ./loadbalancer-svc.sh"
+          volumeMounts:
+            - mountPath: /conf
+              name: config
+          env:
+            - name: TESTING_NS
+              value: {{ .Release.Namespace }}
+            - name: LB_MANIFESTS
+              value: ./loadbalancer-manifests.yaml
+      restartPolicy: Never
+      volumes:
+        - name: config
+          configMap:
+            name: check-loadbalancer-svc
+  backoffLimit: 0
+  podFailurePolicy:
+    rules:
+      - action: FailJob
+        onExitCodes:
+          operator: In
+          values: [ 1 ]
+{{- end }}
